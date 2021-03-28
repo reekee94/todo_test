@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import pick from 'lodash.pick';
 import Tasks from './tasks';
 import TaskForm from './taskForm';
 
@@ -109,11 +110,19 @@ const Todo = () => {
     const saveTask = (task) => {
         const method = task._id ? 'PUT' : 'POST';
         const url = task._id ? `tasks/${task._id}` : 'tasks';
+        const fields = [
+            'title',
+            'cat',
+            'content',
+            'completed',
+            'start_date',
+            'due_date',
+        ];
 
         axios({
             url,
             method,
-            data: task,
+            data: pick(task, fields),
             headers: {
                 'Content-Type': 'application/json',
             },
